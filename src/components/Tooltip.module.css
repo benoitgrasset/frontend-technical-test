@@ -1,0 +1,9 @@
+.tooltip {
+    opacity: 1;
+    line-height: 20px;
+    box-shadow: 0 0 20px rgba(0 0 0 / 8%);
+    border-radius: 4px;
+    max-width: 400px;
+    font-size: 12px!important;
+  }
+  

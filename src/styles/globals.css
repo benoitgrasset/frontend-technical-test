@@ -1,3 +1,14 @@
+:root {
+  --blue: rgb(0, 132, 255);
+  --blue-light: rgb(127, 172, 255);
+  --blue-dark: rgb(8, 93, 173);
+  --gray: rgb(211, 211, 211);
+  --gray-dark: rgb(174, 174, 174);
+  --orange: rgb(236, 110, 36);
+  --border-radius: 10px;
+}
+
+
 html,
 body {
   padding: 0;

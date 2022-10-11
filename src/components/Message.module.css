@@ -1,0 +1,41 @@
+.message {
+    position: relative;
+    background-color: lightgrey;
+    color: black;
+    padding: 1.5rem;
+    padding-right: 3rem;
+    margin: 1rem 0;
+    max-width: 500px;
+    border-radius: 18px;
+    text-align: center;
+    word-break: break-all;
+    white-space: normal;
+  }
+  
+  .message.logged {
+    background-color: var(--blue);
+    color: white;
+  }
+
+  .button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    border: none;
+    cursor: pointer;
+    border-radius: var(--border-radius);
+    background-color: var(--gray);
+  }
+
+  .button.logged {
+    background-color: var(--blue);
+    color: white;
+  }
+
+  .button.logged:hover {
+    background-color: var(--blue-dark);
+  }
+
+  .button:hover {
+    background-color: var(--gray-dark);
+  }
