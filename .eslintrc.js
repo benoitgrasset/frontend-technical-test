@@ -12,6 +12,8 @@ module.exports = {
     'plugin:@typescript-eslint/recommended',
     'prettier',
     'stylelint-config-prettier',
+    'next',
+    'next/core-web-vitals',
   ],
   overrides: [],
   parser: '@typescript-eslint/parser',
