@@ -1,18 +1,18 @@
-import React, { FC, useState } from "react";
-import styles from "../../styles/Home.module.css";
-import { useRouter } from "next/router";
-import cx from "classnames";
-import { getTimeStamp } from "../../utils/convertTimeStamp";
-import { Header } from "../../components";
-import { IConversation } from "../../types/conversation";
-import { useDispatch, useSelector } from "react-redux";
+import cx from 'classnames';
+import { useRouter } from 'next/router';
+import React, { FC, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Header } from '../../components';
 import {
   createConversationRequest,
   selectConversations,
   selectLoggedUser,
   selectUsers,
-} from "../../redux/slice";
-import { loggedUserId } from "../_app";
+} from '../../redux/slice';
+import styles from '../../styles/Home.module.css';
+import { IConversation } from '../../types/conversation';
+import { getTimeStamp } from '../../utils/convertTimeStamp';
+import { loggedUserId } from '../_app';
 
 const createRandomId = () => Math.floor(Math.random() * 10000000);
 

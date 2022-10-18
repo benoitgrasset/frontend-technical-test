@@ -1,7 +1,8 @@
-import { IConversation } from "../types/conversation";
-import { IMessage } from "../types/message";
+import fetch from 'cross-fetch';
+import { IConversation } from '../types/conversation';
+import { IMessage } from '../types/message';
 
-const baseUrl = "http://localhost:3005/";
+export const baseUrl = 'http://localhost:3005/';
 
 export const getUser = async (userId: number) => {
   const user = await fetch(baseUrl + `user/${userId}`)
@@ -31,9 +32,9 @@ export const getConversations = async (userId: number) => {
 
 export const postConversation = async (userId: number, body: IConversation) => {
   await fetch(baseUrl + `conversations/${userId}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
   }).catch((err) =>
@@ -43,9 +44,9 @@ export const postConversation = async (userId: number, body: IConversation) => {
 
 export const deleteConversation = async (conversationId: number) => {
   await fetch(baseUrl + `conversation/${conversationId}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      accept: "application/json",
+      accept: 'application/json',
     },
   }).catch((err) =>
     console.error(`Error deleting conversation ${conversationId}`, err)
@@ -67,9 +68,9 @@ export const getMessages = async (conversationId: number) => {
 
 export const postMessage = async (conversationId: number, body: IMessage) => {
   await fetch(baseUrl + `messages/${conversationId}`, {
-    method: "POST",
+    method: 'POST',
     headers: {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
     },
     body: JSON.stringify(body),
   }).catch((err) =>
@@ -86,9 +87,9 @@ export const postMessage = async (conversationId: number, body: IMessage) => {
  */
 export const deleteMessage = async (messageId: number) => {
   await fetch(baseUrl + `message/${messageId}`, {
-    method: "DELETE",
+    method: 'DELETE',
     headers: {
-      accept: "application/json",
+      accept: 'application/json',
     },
   }).catch((err) => console.error(`Error deleting message ${messageId}`, err));
 };
