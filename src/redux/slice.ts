@@ -1,9 +1,9 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-import { IConversation } from "../types/conversation";
-import { IUser } from "../types/user";
-import { HYDRATE } from "next-redux-wrapper";
-import { getLoggedUserId } from "../utils/getLoggedUserId";
-import { IMessage } from "../types/message";
+import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { HYDRATE } from 'next-redux-wrapper';
+import { IConversation } from '../types/conversation';
+import { IMessage } from '../types/message';
+import { IUser } from '../types/user';
+import { getLoggedUserId } from '../utils/getLoggedUserId';
 
 type AppState = {
   users: IUser[];
@@ -22,7 +22,7 @@ const initialState: AppState = {
 };
 
 const slice = createSlice({
-  name: "app",
+  name: 'app',
   initialState,
   reducers: {
     getUsersRequest: () => {},

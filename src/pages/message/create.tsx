@@ -2,7 +2,7 @@ import cx from 'classnames';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Header } from '../../components';
+import { Header, SendIcon, Textfield } from '../../components';
 import {
   createConversationRequest,
   selectConversations,
@@ -13,8 +13,6 @@ import styles from '../../styles/Home.module.css';
 import { IConversation } from '../../types/conversation';
 import { getTimeStamp } from '../../utils/convertTimeStamp';
 import { loggedUserId } from '../_app';
-
-const createRandomId = () => Math.floor(Math.random() * 10000000);
 
 const getUniqueIds = (conversation: IConversation): string => {
   return [conversation.recipientId, conversation.senderId]
@@ -39,14 +37,13 @@ const Messages: FC = () => {
   const handleCreateConversation = () => {
     if (newUserId !== null) {
       const recipientUser = users.find((user) => user.id === newUserId);
-      const newId = createRandomId();
       const newConversation: IConversation = {
-        id: newId,
         lastMessageTimestamp: getTimeStamp(),
         recipientId: recipientUser.id,
         recipientNickname: recipientUser.nickname,
         senderId: loggedUser.id,
         senderNickname: loggedUser.nickname,
+        id: null,
       };
 
       if (
@@ -60,13 +57,13 @@ const Messages: FC = () => {
         ).id;
         router.push(`/message/${conversationId}`);
       } else {
-        const newId = createRandomId();
         dispatch(
           createConversationRequest({
             userId: loggedUserId,
             body: newConversation,
           })
         );
+        const newId = 123456;
         router.push(`/message/${newId}`);
       }
     }
@@ -99,14 +96,12 @@ const Messages: FC = () => {
         </>
       </Header>
       <div />
-      <input
-        id="message"
-        minLength={1}
-        maxLength={600}
-        type="text"
+      <Textfield
+        name="message"
+        label="message"
         placeholder="Send message"
-        className={cx(styles.input, styles.disabled)}
-        disabled={true}
+        disabled
+        icon={<SendIcon />}
       />
     </div>
   );

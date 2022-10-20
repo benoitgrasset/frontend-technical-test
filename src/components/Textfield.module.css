@@ -1,0 +1,19 @@
+.input {
+  padding: 5px 20px;
+  margin: 20px 40px;
+  min-width: 200px;
+  height: 60px;
+  border-radius: 18px;
+  border-color: var(--gray);
+  border-style: solid;
+}
+
+.input.disabled {
+  cursor: not-allowed;
+}
+
+@media (max-width: 600px) {
+  .input {
+    margin-left: 10px;
+  }
+}

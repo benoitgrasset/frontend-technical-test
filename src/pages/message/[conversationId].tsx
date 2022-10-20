@@ -1,25 +1,24 @@
-import React, { FC, useEffect, useRef, useState } from "react";
-import styles from "../../styles/Home.module.css";
-import { IMessage } from "../../types/message";
-import cx from "classnames";
-import { convertTimeStamp, getTimeStamp } from "../../utils/convertTimeStamp";
-import { Header, Message } from "../../components";
-import { useDispatch, useSelector } from "react-redux";
+import cx from 'classnames';
+import React, { FC, useEffect, useRef, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { Header, Message, Textfield } from '../../components';
 import {
+  selectConversationId,
   selectConversations,
   selectLoggedUserId,
   selectMessages,
-  selectConversationId,
   sendMessageRequest,
-} from "../../redux/slice";
+} from '../../redux/slice';
+import styles from '../../styles/Home.module.css';
+import { convertTimeStamp, getTimeStamp } from '../../utils/convertTimeStamp';
 
-const dateFormat = "MMMM D, h:mm A";
+const dateFormat = 'MMMM D, h:mm A';
 
 const Messages: FC = () => {
   const dispatch = useDispatch();
   const bottomRef = useRef(null);
 
-  const [value, setValue] = useState("");
+  const [value, setValue] = useState('');
   const conversations = useSelector(selectConversations);
   const messages = useSelector(selectMessages);
   const loggedUserId = useSelector(selectLoggedUserId);
@@ -43,25 +42,17 @@ const Messages: FC = () => {
       }
     : {};
 
-  /**
-   * FIXME: not the max of ALL IDs
-   * @returns
-   */
-  const createNewMessageId = () => {
-    return Math.max(...messages.map((message) => message.id)) + 1;
-  };
-
   const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
-    if (value.length > 0 && event.key === "Enter") {
-      const body: IMessage = {
+    if (value.length > 0 && event.key === 'Enter') {
+      const body = {
         body: value,
-        id: createNewMessageId(),
         conversationId: Number(conversationId),
         authorId: loggedUserId,
         timestamp: getTimeStamp(),
+        id: null,
       };
       dispatch(sendMessageRequest({ conversationId, body }));
-      setValue("");
+      setValue('');
     }
   };
 
@@ -70,7 +61,7 @@ const Messages: FC = () => {
   };
 
   useEffect(() => {
-    bottomRef.current?.scrollIntoView({ behavior: "smooth" });
+    bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
   return (
@@ -106,16 +97,14 @@ const Messages: FC = () => {
           })}
         <div ref={bottomRef} />
       </div>
-      <input
-        id="message"
-        minLength={1}
-        maxLength={600}
-        type="text"
+      <Textfield
+        name="message"
+        label="message"
         placeholder="Send message"
-        className={styles.input}
         value={value}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
+        required
       />
     </div>
   );

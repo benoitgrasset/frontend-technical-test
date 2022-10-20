@@ -21,14 +21,14 @@
 
 .card a,
 .card a:visited {
-  color:black;
+  color: black;
   text-decoration: underline;
 }
 
 .card:hover a,
 .card:focus a,
 .card:active a {
-  color:var(--orange);
+  color: var(--orange);
 }
 
 .center {
@@ -44,7 +44,7 @@
 .messageFlexContainer {
   display: flex;
   flex-direction: column;
- }
+}
 
 .messageItemContainer {
   align-self: flex-start;
@@ -57,20 +57,6 @@
 .author {
   font-weight: 700;
   font-size: large;
-}
-
-.input {
-  padding: 5px 20px;
-  margin: 20px 40px;
-  min-width: 200px;
-  height: 60px;
-  border-radius: 18px;
-  border-color: var(--gray);
-  border-style: solid;
-}
-
-.input.disabled {
-  cursor: not-allowed;
 }
 
 .button {
@@ -108,7 +94,7 @@
 }
 
 .addButton:hover::after {
-  content: "New conversation";
+  content: 'New conversation';
   margin-left: 5px;
   font-weight: 600;
   font-size: medium;
@@ -145,12 +131,12 @@
     background-color: rgb(225, 228, 230);
   }
   to {
-  background-color: rgb(247, 249, 251);
+    background-color: rgb(247, 249, 251);
   }
 }
 
 .card {
-  margin: .5rem 20%;
+  margin: 0.5rem 20%;
   padding: 1.5rem;
   text-align: left;
   color: inherit;
@@ -160,7 +146,7 @@
   transition: color 0.15s ease, border-color 0.15s ease;
   display: flex;
   align-items: center;
-  gap: 100px
+  gap: 100px;
 }
 
 .card:hover,
@@ -193,20 +179,17 @@
 
 @media (max-width: 600px) {
   .card {
-    margin: .5rem 0;
+    margin: 0.5rem 0;
   }
   .messages {
     margin: 10px 40px 10px 10px;
-  }
-  .input {
-    margin-left: 10px;
   }
   .addButton {
     position: static;
     width: 100%;
   }
   .addButton::after {
-    content: "New conversation";
+    content: 'New conversation';
     margin-left: 5px;
     font-weight: 600;
     font-size: medium;

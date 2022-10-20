@@ -1,5 +1,5 @@
-import { PayloadAction } from "@reduxjs/toolkit";
-import { call, put, takeLatest, all, select } from "redux-saga/effects";
+import { PayloadAction } from '@reduxjs/toolkit';
+import { all, call, put, select, takeLatest } from 'redux-saga/effects';
 import {
   deleteMessage,
   getConversations,
@@ -7,30 +7,30 @@ import {
   getUsers,
   postConversation,
   postMessage,
-} from "../services";
-import { IConversation } from "../types/conversation";
-import { IMessage } from "../types/message";
+} from '../services';
+import { IConversation } from '../types/conversation';
+import { IMessage } from '../types/message';
 import {
-  getConversationsError,
-  getConversationsRequest,
-  getConversationsSuccess,
   createConversationError,
   createConversationRequest,
   createConversationSuccess,
+  deleteMessageError,
+  deleteMessageRequest,
+  deleteMessageSuccess,
+  getConversationsError,
+  getConversationsRequest,
+  getConversationsSuccess,
+  getMessagesError,
+  getMessagesRequest,
+  getMessagesSuccess,
   getUsersError,
   getUsersRequest,
   getUsersSuccess,
   selectLoggedUserId,
-  getMessagesError,
-  getMessagesSuccess,
-  getMessagesRequest,
   sendMessageError,
-  sendMessageSuccess,
   sendMessageRequest,
-  deleteMessageError,
-  deleteMessageSuccess,
-  deleteMessageRequest,
-} from "./slice";
+  sendMessageSuccess,
+} from './slice';
 
 function* getUsersFLow() {
   try {
