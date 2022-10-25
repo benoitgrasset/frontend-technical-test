@@ -1,6 +1,7 @@
 import type { AppProps } from 'next/app';
+import { Provider } from 'react-redux';
 import { ErrorBoundary } from '../components';
-import { wrapper } from '../redux/store';
+import { store } from '../redux/store';
 import '../styles/globals.css';
 import { getLoggedUserId } from '../utils/getLoggedUserId';
 
@@ -10,9 +11,11 @@ export const loggedUserId = getLoggedUserId();
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <ErrorBoundary>
-      <Component {...pageProps} />;
+      <Provider store={store}>
+        <Component {...pageProps} />
+      </Provider>
     </ErrorBoundary>
   );
 }
 
-export default wrapper.withRedux(MyApp);
+export default MyApp;

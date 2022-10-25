@@ -5,23 +5,21 @@ import styles from './Textfield.module.css';
 interface Props extends InputHTMLAttributes<HTMLInputElement> {
   icon?: React.ReactNode;
   name: string;
-  label: string;
 }
 
 const Textfield: FC<Props> = (props) => {
-  const { icon, name, label, ...otherProps } = props;
+  const { icon, name, ...otherProps } = props;
   return (
-    <div>
-      <label htmlFor={name}>{label}</label>
+    <div className={styles.inputWrapper}>
       <input
         type="text"
         id={name}
         minLength={1}
         maxLength={600}
-        className={cx(styles.input, { [styles.disabled]: props.disabled })}
+        className={cx({ [styles.disabled]: props.disabled })}
         {...otherProps}
       />
-      {icon}
+      <span className={styles.icon}>{icon}</span>
     </div>
   );
 };

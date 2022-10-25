@@ -1,19 +1,20 @@
-import React, { FC, useState } from "react";
-import cx from "classnames";
-import styles from "./Message.module.css";
-import { DeleteIcon } from "./DeleteIcon";
-import Tooltip from "./Tooltip";
-import { useDispatch } from "react-redux";
-import { deleteMessageRequest } from "../redux/slice";
+import cx from 'classnames';
+import { FC, useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { deleteMessageRequest } from '../redux/slice';
+import { DeleteIcon } from './DeleteIcon';
+import styles from './Message.module.css';
+import Tooltip from './Tooltip';
 
 type Props = {
   body: string;
   isLogged: boolean;
   id: number;
+  index: number;
 };
 
 const Message: FC<Props> = (props) => {
-  const { isLogged, body, id } = props;
+  const { isLogged, body, id, index } = props;
   const [visible, setVisible] = useState(false);
   const dispatch = useDispatch();
 
@@ -33,6 +34,8 @@ const Message: FC<Props> = (props) => {
         setVisible(false);
       }}
       data-testid={`message-${id}`}
+      role="none"
+      tabIndex={index + 1}
     >
       {body}
       {visible && (

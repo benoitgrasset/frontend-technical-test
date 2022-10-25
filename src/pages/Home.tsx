@@ -1,15 +1,15 @@
-import { FC, useEffect } from "react";
-import Head from "next/head";
-import styles from "../styles/Home.module.css";
-import { useDispatch, useSelector } from "react-redux";
+import cx from 'classnames';
+import Head from 'next/head';
+import { useRouter } from 'next/router';
+import { FC, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { AddIcon, Conversation, ConversationSkeleton } from '../components';
 import {
-  getUsersRequest,
   getConversationsRequest,
+  getUsersRequest,
   selectConversations,
-} from "../redux/slice";
-import { AddIcon, Conversation, ConversationSkeleton } from "../components";
-import { useRouter } from "next/router";
-import cx from "classnames";
+} from '../redux/slice';
+import styles from '../styles/Home.module.css';
 
 const Home: FC = () => {
   const year = new Date().getFullYear();
@@ -35,6 +35,7 @@ const Home: FC = () => {
     <div className={styles.container}>
       <Head>
         <title>Frontend Technical test - Leboncoin</title>
+        <link rel="shortcut icon" href="/favicon.ico" />
         <meta
           name="description"
           content="Frontend exercise for developpers who want to join us on leboncoin.fr"
@@ -51,6 +52,7 @@ const Home: FC = () => {
                 key={conversation.id}
                 conversation={conversation}
                 dataTestId={`conversation-${index}`}
+                index={index}
               />
             ))}
         <button

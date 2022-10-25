@@ -1,7 +1,7 @@
 import cx from 'classnames';
 import React, { FC, useEffect, useRef, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Header, Message, Textfield } from '../../components';
+import { Header, Message, SendIcon, Textfield } from '../../components';
 import {
   selectConversationId,
   selectConversations,
@@ -69,7 +69,7 @@ const Messages: FC = () => {
       <Header>{`${userWithIds[otherUserId]} - You`}</Header>
       <div className={styles.messages} id="messages">
         {messages &&
-          messages.map((message) => {
+          messages.map((message, index) => {
             const isLogged = message.authorId === loggedUserId;
             return (
               <div key={message.id} className={styles.messageFlexContainer}>
@@ -90,6 +90,7 @@ const Messages: FC = () => {
                     body={message.body}
                     isLogged={isLogged}
                     id={message.id}
+                    index={index}
                   />
                 </div>
               </div>
@@ -99,12 +100,12 @@ const Messages: FC = () => {
       </div>
       <Textfield
         name="message"
-        label="message"
         placeholder="Send message"
         value={value}
         onChange={handleInputChange}
         onKeyDown={handleKeyDown}
         required
+        icon={<SendIcon color="grey" />}
       />
     </div>
   );

@@ -1,8 +1,10 @@
-import React, { FC } from "react";
-import cx from "classnames";
-import ReactTooltip from "react-tooltip";
+import cx from 'classnames';
+import dynamic from 'next/dynamic';
+import { FC } from 'react';
 
-import s from "./Tooltip.module.css";
+import s from './Tooltip.module.css';
+
+const ReactTooltip = dynamic(() => import('react-tooltip'), { ssr: false });
 
 interface Props {
   id?: string;

@@ -1,5 +1,4 @@
 import { configureStore } from '@reduxjs/toolkit';
-import { createWrapper } from 'next-redux-wrapper';
 import createSagaMiddleware from 'redux-saga';
 import saga from './sagas';
 import appReducer from './slice';
@@ -19,5 +18,3 @@ sagaMiddleware.run(saga);
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;
 export type AppStore = ReturnType<typeof makeStore>;
-
-export const wrapper = createWrapper<AppStore>(makeStore, { debug: true });

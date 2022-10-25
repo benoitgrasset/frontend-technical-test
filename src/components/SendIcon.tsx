@@ -12,6 +12,6 @@ export const SendIcon: FC<SVGAttributes<SVGElement>> = ({
     xmlns="http://www.w3.org/2000/svg"
     {...svgProps}
   >
-    <path fill="#000000" d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
+    <path fill={color} d="M2,21L23,12L2,3V10L17,12L2,14V21Z" />
   </svg>
 );

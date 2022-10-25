@@ -24,7 +24,7 @@ const Messages: FC = () => {
   const router = useRouter();
 
   const users = useSelector(selectUsers);
-  const [newUserId, setNewUserId] = useState<number | null>(users[0].id);
+  const [newUserId, setNewUserId] = useState<number | null>(users[0]?.id || 0);
   const conversations = useSelector(selectConversations);
 
   const loggedUser = useSelector(selectLoggedUser);
@@ -37,24 +37,20 @@ const Messages: FC = () => {
   const handleCreateConversation = () => {
     if (newUserId !== null) {
       const recipientUser = users.find((user) => user.id === newUserId);
+      const newId = Math.max(...conversations.map((conv) => conv.id)) + 1;
       const newConversation: IConversation = {
         lastMessageTimestamp: getTimeStamp(),
         recipientId: recipientUser.id,
         recipientNickname: recipientUser.nickname,
         senderId: loggedUser.id,
         senderNickname: loggedUser.nickname,
-        id: null,
+        id: newId,
       };
-
-      if (
-        conversations
-          .map((conversation) => getUniqueIds(conversation))
-          .includes(getUniqueIds(newConversation))
-      ) {
-        const conversationId = conversations.find(
-          (conversation) =>
-            getUniqueIds(conversation) === getUniqueIds(newConversation)
-        ).id;
+      const conversationId = conversations.find(
+        (conversation) =>
+          getUniqueIds(conversation) === getUniqueIds(newConversation)
+      )?.id;
+      if (conversationId) {
         router.push(`/message/${conversationId}`);
       } else {
         dispatch(
@@ -63,7 +59,6 @@ const Messages: FC = () => {
             body: newConversation,
           })
         );
-        const newId = 123456;
         router.push(`/message/${newId}`);
       }
     }
@@ -79,13 +74,15 @@ const Messages: FC = () => {
             value={newUserId}
             onChange={handleSelectChange}
           >
-            {users.map((user) => {
-              return (
-                <option key={user.id} value={user.id}>
-                  {user.nickname}
-                </option>
-              );
-            })}
+            {users
+              .filter((user) => user.id !== loggedUserId)
+              .map((user) => {
+                return (
+                  <option key={user.id} value={user.id}>
+                    {user.nickname}
+                  </option>
+                );
+              })}
           </select>
           <button
             onClick={handleCreateConversation}
@@ -98,10 +95,9 @@ const Messages: FC = () => {
       <div />
       <Textfield
         name="message"
-        label="message"
         placeholder="Send message"
         disabled
-        icon={<SendIcon />}
+        icon={<SendIcon color="grey" />}
       />
     </div>
   );

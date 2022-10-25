@@ -1,23 +1,24 @@
-import React, { FC } from "react";
-import styles from "../styles/Home.module.css";
-import { faker } from "@faker-js/faker";
-import Image from "next/image";
-import { IConversation } from "../types/conversation";
-import { useRouter } from "next/router";
-import { convertTimeStamp } from "../utils/convertTimeStamp";
-import { useDispatch, useSelector } from "react-redux";
-import { getMessagesRequest, selectLoggedUser } from "../redux/slice";
+import { faker } from '@faker-js/faker';
+import Image from 'next/image';
+import { useRouter } from 'next/router';
+import { FC, useMemo } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { getMessagesRequest, selectLoggedUser } from '../redux/slice';
+import styles from '../styles/Home.module.css';
+import { IConversation } from '../types/conversation';
+import { convertTimeStamp } from '../utils/convertTimeStamp';
 
 type Props = {
   conversation: IConversation;
   dataTestId: string;
+  index: number;
 };
 
 const Conversation: FC<Props> = (props) => {
-  const { conversation, dataTestId } = props;
+  const { conversation, dataTestId, index } = props;
   const loggedUser = useSelector(selectLoggedUser);
 
-  const avatar = faker.image.avatar();
+  const avatar = useMemo(() => faker.image.avatar(), [conversation.id]);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -36,6 +37,8 @@ const Conversation: FC<Props> = (props) => {
       className={styles.card}
       onClick={() => handleClick(conversation.id)}
       data-testid={dataTestId}
+      tabIndex={index + 1}
+      role="none"
     >
       <Image
         src={avatar}
