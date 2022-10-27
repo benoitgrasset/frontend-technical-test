@@ -19,7 +19,7 @@ const Messages: FC = () => {
   const { data: messages } = api.useGetMessagesQuery(conversationId);
   const [sendMessage] = api.usePostMessageMutation();
 
-  const conversation = conversations.find(
+  const conversation = conversations?.find(
     (conversation) => conversation.id === conversationId
   );
 
