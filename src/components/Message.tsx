@@ -1,7 +1,5 @@
 import cx from 'classnames';
 import { FC, useState } from 'react';
-import { useDispatch } from 'react-redux';
-import { deleteMessageRequest } from '../redux/slice';
 import { DeleteIcon } from './DeleteIcon';
 import styles from './Message.module.css';
 import Tooltip from './Tooltip';
@@ -16,10 +14,9 @@ type Props = {
 const Message: FC<Props> = (props) => {
   const { isLogged, body, id, index } = props;
   const [visible, setVisible] = useState(false);
-  const dispatch = useDispatch();
 
   const handleDeleteMessage = (messageId: number) => {
-    dispatch(deleteMessageRequest(messageId));
+    // deleteMessageRequest(messageId);
   };
 
   return (

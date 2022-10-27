@@ -1,7 +1,7 @@
 ## How it works
 
 - install node modules `npm install`
-- launch the server with `npm run start-dev`
+- launch the server with `npm run start-server`
 - run `npm run dev`
 - the app will be available on [localhost:3000](http://localhost:3000/)
 

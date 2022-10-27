@@ -3,7 +3,8 @@ import Image from 'next/image';
 import { useRouter } from 'next/router';
 import { FC, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { getMessagesRequest, selectLoggedUser } from '../redux/slice';
+import { selectLoggedUserId, setConversationId } from '../redux/slice';
+import { api } from '../services/api';
 import styles from '../styles/Home.module.css';
 import { IConversation } from '../types/conversation';
 import { convertTimeStamp } from '../utils/convertTimeStamp';
@@ -16,15 +17,19 @@ type Props = {
 
 const Conversation: FC<Props> = (props) => {
   const { conversation, dataTestId, index } = props;
-  const loggedUser = useSelector(selectLoggedUser);
+  const { data: users } = api.useGetUsersQuery();
+  const loggedUserId = useSelector(selectLoggedUserId);
+  const loggedUser = users?.find((user) => user.id === loggedUserId);
+  const { refetch: getMessages } = api.useGetMessagesQuery(conversation.id);
+  const dispatch = useDispatch();
 
   const avatar = useMemo(() => faker.image.avatar(), [conversation.id]);
   const router = useRouter();
-  const dispatch = useDispatch();
 
   const handleClick = (conversationId: number) => {
     router.push(`/message/${conversationId}`);
-    dispatch(getMessagesRequest(conversationId));
+    dispatch(setConversationId(conversationId));
+    getMessages();
   };
 
   const nickname =

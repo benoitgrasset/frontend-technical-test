@@ -1,18 +1,14 @@
 import cx from 'classnames';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Header, SendIcon, Textfield } from '../../components';
-import {
-  createConversationRequest,
-  selectConversations,
-  selectLoggedUser,
-  selectUsers,
-} from '../../redux/slice';
+import { selectLoggedUserId } from '../../redux/slice';
+import { api } from '../../services/api';
+
 import styles from '../../styles/Home.module.css';
 import { IConversation } from '../../types/conversation';
 import { getTimeStamp } from '../../utils/convertTimeStamp';
-import { loggedUserId } from '../_app';
 
 const getUniqueIds = (conversation: IConversation): string => {
   return [conversation.recipientId, conversation.senderId]
@@ -23,12 +19,13 @@ const getUniqueIds = (conversation: IConversation): string => {
 const Messages: FC = () => {
   const router = useRouter();
 
-  const users = useSelector(selectUsers);
+  const { data: users } = api.useGetUsersQuery();
   const [newUserId, setNewUserId] = useState<number | null>(users[0]?.id || 0);
-  const conversations = useSelector(selectConversations);
+  const loggedUserId = useSelector(selectLoggedUserId);
+  const { data: conversations } = api.useGetConversationsQuery(loggedUserId);
+  const [createConversation] = api.usePostConversationMutation();
 
-  const loggedUser = useSelector(selectLoggedUser);
-  const dispatch = useDispatch();
+  const loggedUser = users?.find((user) => user.id === loggedUserId);
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setNewUserId(Number(event.target.value));
   };
@@ -36,7 +33,7 @@ const Messages: FC = () => {
   // create a new conversation if it doesn't exist yet, otherwise redirect to the existing conversation
   const handleCreateConversation = () => {
     if (newUserId !== null) {
-      const recipientUser = users.find((user) => user.id === newUserId);
+      const recipientUser = users?.find((user) => user.id === newUserId);
       const newId = Math.max(...conversations.map((conv) => conv.id)) + 1;
       const newConversation: IConversation = {
         lastMessageTimestamp: getTimeStamp(),
@@ -46,19 +43,17 @@ const Messages: FC = () => {
         senderNickname: loggedUser.nickname,
         id: newId,
       };
-      const conversationId = conversations.find(
+      const conversationId = conversations?.find(
         (conversation) =>
           getUniqueIds(conversation) === getUniqueIds(newConversation)
       )?.id;
       if (conversationId) {
         router.push(`/message/${conversationId}`);
       } else {
-        dispatch(
-          createConversationRequest({
-            userId: loggedUserId,
-            body: newConversation,
-          })
-        );
+        createConversation({
+          userId: loggedUserId,
+          body: newConversation,
+        });
         router.push(`/message/${newId}`);
       }
     }

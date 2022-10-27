@@ -1,19 +1,20 @@
 import { configureStore } from '@reduxjs/toolkit';
-import createSagaMiddleware from 'redux-saga';
-import saga from './sagas';
+import { setupListeners } from '@reduxjs/toolkit/query';
+import { api } from '../services/api';
 import appReducer from './slice';
 
-const sagaMiddleware = createSagaMiddleware();
+const rtkMiddleware = (getDefaultMiddleware) =>
+  getDefaultMiddleware().concat(api.middleware);
 
 export const store = configureStore({
-  reducer: appReducer,
-  middleware: [sagaMiddleware],
+  reducer: { appReducer, [api.reducerPath]: api.reducer },
+  middleware: rtkMiddleware,
   devTools: true,
 });
 
 const makeStore = () => store;
 
-sagaMiddleware.run(saga);
+setupListeners(store.dispatch);
 
 export type RootState = ReturnType<typeof store.getState>;
 export type AppDispatch = typeof store.dispatch;

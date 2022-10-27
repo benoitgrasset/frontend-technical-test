@@ -1,35 +1,28 @@
 import cx from 'classnames';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
-import { FC, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FC } from 'react';
+import { useSelector } from 'react-redux';
 import { AddIcon, Conversation, ConversationSkeleton } from '../components';
-import {
-  getConversationsRequest,
-  getUsersRequest,
-  selectConversations,
-} from '../redux/slice';
+import { selectLoggedUserId } from '../redux/slice';
+import { api } from '../services/api';
 import styles from '../styles/Home.module.css';
 
 const Home: FC = () => {
   const year = new Date().getFullYear();
   const router = useRouter();
-  const dispatch = useDispatch();
-  const conversations = useSelector(selectConversations);
+  const loggedUserId = useSelector(selectLoggedUserId);
+
+  const {
+    data: conversations,
+    error,
+    isLoading,
+    isError,
+  } = api.useGetConversationsQuery(loggedUserId);
 
   const handleAddConversation = () => {
     router.push(`/message/create`);
   };
-
-  useEffect(() => {
-    dispatch(getUsersRequest());
-  }, [dispatch]);
-
-  useEffect(() => {
-    dispatch(getConversationsRequest());
-  }, [dispatch]);
-
-  const isLoading = conversations.length === 0;
 
   return (
     <div className={styles.container}>

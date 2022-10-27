@@ -1,28 +1,23 @@
 import cx from 'classnames';
 import React, { FC, useEffect, useRef, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Header, Message, SendIcon, Textfield } from '../../components';
-import {
-  selectConversationId,
-  selectConversations,
-  selectLoggedUserId,
-  selectMessages,
-  sendMessageRequest,
-} from '../../redux/slice';
+import { selectConversationId, selectLoggedUserId } from '../../redux/slice';
+import { api } from '../../services/api';
 import styles from '../../styles/Home.module.css';
 import { convertTimeStamp, getTimeStamp } from '../../utils/convertTimeStamp';
 
 const dateFormat = 'MMMM D, h:mm A';
 
 const Messages: FC = () => {
-  const dispatch = useDispatch();
   const bottomRef = useRef(null);
 
   const [value, setValue] = useState('');
-  const conversations = useSelector(selectConversations);
-  const messages = useSelector(selectMessages);
   const loggedUserId = useSelector(selectLoggedUserId);
   const conversationId = useSelector(selectConversationId);
+  const { data: conversations } = api.useGetConversationsQuery(loggedUserId);
+  const { data: messages } = api.useGetMessagesQuery(conversationId);
+  const [sendMessage] = api.usePostMessageMutation();
 
   const conversation = conversations.find(
     (conversation) => conversation.id === conversationId
@@ -51,7 +46,7 @@ const Messages: FC = () => {
         timestamp: getTimeStamp(),
         id: null,
       };
-      dispatch(sendMessageRequest({ conversationId, body }));
+      sendMessage({ conversationId, body });
       setValue('');
     }
   };
