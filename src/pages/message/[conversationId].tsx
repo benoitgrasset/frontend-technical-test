@@ -1,24 +1,28 @@
 import cx from 'classnames';
 import React, { FC, useEffect, useRef, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { Header, Message, SendIcon, Textfield } from '../../components';
 import { selectConversationId, selectLoggedUserId } from '../../redux/slice';
-import { api } from '../../services/api';
+import { getConversations, getMessages, postMessage } from '../../services';
 import styles from '../../styles/Home.module.css';
 import { convertTimeStamp, getTimeStamp } from '../../utils/convertTimeStamp';
-import { withContext } from '../../utils/withContext';
 
 const dateFormat = 'MMMM D, h:mm A';
 
-const Messages: FC = (props) => {
+const Messages: FC = () => {
   const bottomRef = useRef(null);
 
   const [value, setValue] = useState('');
   const loggedUserId = useSelector(selectLoggedUserId);
   const conversationId = useSelector(selectConversationId);
-  const { data: conversations } = api.useGetConversationsQuery(loggedUserId);
-  const { data: messages } = api.useGetMessagesQuery(conversationId);
-  const [sendMessage] = api.usePostMessageMutation();
+  const { data: conversations } = useQuery(['conversations'], () =>
+    getConversations(loggedUserId)
+  );
+  const { data: messages } = useQuery(['messages'], () =>
+    getMessages(conversationId)
+  );
+  const { mutate: sendMessage } = useMutation(postMessage);
 
   const conversation = conversations?.find(
     (conversation) => conversation.id === conversationId
@@ -59,8 +63,6 @@ const Messages: FC = (props) => {
   useEffect(() => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
-
-  console.log('BG', props);
 
   return (
     <div className={styles.grid}>
@@ -109,4 +111,4 @@ const Messages: FC = (props) => {
   );
 };
 
-export default withContext(Messages);
+export default Messages;

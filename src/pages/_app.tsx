@@ -1,5 +1,7 @@
 import type { AppProps } from 'next/app';
-import { createContext, useState } from 'react';
+import { createContext } from 'react';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { ReactQueryDevtools } from 'react-query/devtools';
 import { Provider } from 'react-redux';
 import { ErrorBoundary } from '../components';
 import { store } from '../redux/store';
@@ -11,21 +13,16 @@ export const loggedUserId = getLoggedUserId();
 export const AppContext = createContext(null);
 
 function MyApp({ Component, pageProps }: AppProps) {
-  const [conversationId, setConversationId] = useState(null);
-
-  const context = {
-    conversationId,
-    loggedUserId,
-    setConversationId,
-  };
+  const queryClient = new QueryClient();
 
   return (
     <ErrorBoundary>
-      <AppContext.Provider value={context}>
-        <Provider store={store}>
+      <Provider store={store}>
+        <QueryClientProvider client={queryClient}>
           <Component {...pageProps} />
-        </Provider>
-      </AppContext.Provider>
+          <ReactQueryDevtools initialIsOpen={true} />
+        </QueryClientProvider>
+      </Provider>
     </ErrorBoundary>
   );
 }

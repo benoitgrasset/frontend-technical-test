@@ -2,10 +2,11 @@ import cx from 'classnames';
 import Head from 'next/head';
 import { useRouter } from 'next/router';
 import { FC } from 'react';
+import { useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { AddIcon, Conversation, ConversationSkeleton } from '../components';
 import { selectLoggedUserId } from '../redux/slice';
-import { api } from '../services/api';
+import { getConversations } from '../services';
 import styles from '../styles/Home.module.css';
 
 const Home: FC = () => {
@@ -18,7 +19,7 @@ const Home: FC = () => {
     error,
     isLoading,
     isError,
-  } = api.useGetConversationsQuery(loggedUserId);
+  } = useQuery(['conversations'], () => getConversations(loggedUserId));
 
   const handleAddConversation = () => {
     router.push(`/message/create`);

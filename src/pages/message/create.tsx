@@ -1,10 +1,11 @@
 import cx from 'classnames';
 import { useRouter } from 'next/router';
 import React, { FC, useState } from 'react';
+import { useMutation, useQuery } from 'react-query';
 import { useSelector } from 'react-redux';
 import { Header, SendIcon, Textfield } from '../../components';
 import { selectLoggedUserId } from '../../redux/slice';
-import { api } from '../../services/api';
+import { getConversations, getUsers, postConversation } from '../../services';
 
 import styles from '../../styles/Home.module.css';
 import { IConversation } from '../../types/conversation';
@@ -19,11 +20,13 @@ const getUniqueIds = (conversation: IConversation): string => {
 const Messages: FC = () => {
   const router = useRouter();
 
-  const { data: users } = api.useGetUsersQuery();
+  const { data: users } = useQuery(['users'], () => getUsers());
   const [newUserId, setNewUserId] = useState<number | null>(users[0]?.id || 0);
   const loggedUserId = useSelector(selectLoggedUserId);
-  const { data: conversations } = api.useGetConversationsQuery(loggedUserId);
-  const [createConversation] = api.usePostConversationMutation();
+  const { data: conversations } = useQuery(['conversations'], () =>
+    getConversations(loggedUserId)
+  );
+  const { mutate: createConversation } = useMutation(postConversation);
 
   const loggedUser = users?.find((user) => user.id === loggedUserId);
   const handleSelectChange = (event: React.ChangeEvent<HTMLSelectElement>) => {

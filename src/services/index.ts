@@ -30,8 +30,14 @@ export const getConversations = async (userId: number) => {
   return conversations;
 };
 
-export const postConversation = async (userId: number, body: IConversation) => {
-  await fetch(baseUrl + `conversations/${userId}`, {
+export const postConversation = async ({
+  userId,
+  body,
+}: {
+  userId: number;
+  body: IConversation;
+}) => {
+  const response = await fetch(baseUrl + `conversations/${userId}`, {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -40,6 +46,8 @@ export const postConversation = async (userId: number, body: IConversation) => {
   }).catch((err) =>
     console.error(`Error posting conversation from user ${userId}`, err)
   );
+
+  return response;
 };
 
 export const deleteConversation = async (conversationId: number) => {
@@ -66,7 +74,13 @@ export const getMessages = async (conversationId: number) => {
   return messages;
 };
 
-export const postMessage = async (conversationId: number, body: IMessage) => {
+export const postMessage = async ({
+  conversationId,
+  body,
+}: {
+  conversationId: number;
+  body: IMessage;
+}) => {
   await fetch(baseUrl + `messages/${conversationId}`, {
     method: 'POST',
     headers: {

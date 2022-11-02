@@ -38,7 +38,7 @@ export const { setConversationId, setLoggedUserId } = slice.actions;
 const rootReducer = slice.reducer;
 export default rootReducer;
 
-export const selectLoggedUserId = (state: { appReducer: AppState }) =>
-  state.appReducer.loggedUserId || null;
-export const selectConversationId = (state: { appReducer: AppState }) =>
-  state.appReducer.conversationId || null;
+export const selectLoggedUserId = (state: AppState) =>
+  state.loggedUserId || null;
+export const selectConversationId = (state: AppState) =>
+  state.conversationId || null;
