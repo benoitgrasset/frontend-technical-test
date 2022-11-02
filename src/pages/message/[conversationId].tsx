@@ -6,10 +6,11 @@ import { selectConversationId, selectLoggedUserId } from '../../redux/slice';
 import { api } from '../../services/api';
 import styles from '../../styles/Home.module.css';
 import { convertTimeStamp, getTimeStamp } from '../../utils/convertTimeStamp';
+import { withContext } from '../../utils/withContext';
 
 const dateFormat = 'MMMM D, h:mm A';
 
-const Messages: FC = () => {
+const Messages: FC = (props) => {
   const bottomRef = useRef(null);
 
   const [value, setValue] = useState('');
@@ -59,6 +60,8 @@ const Messages: FC = () => {
     bottomRef.current?.scrollIntoView({ behavior: 'smooth' });
   }, [messages]);
 
+  console.log('BG', props);
+
   return (
     <div className={styles.grid}>
       <Header>{`${userWithIds[otherUserId]} - You`}</Header>
@@ -106,4 +109,4 @@ const Messages: FC = () => {
   );
 };
 
-export default Messages;
+export default withContext(Messages);
