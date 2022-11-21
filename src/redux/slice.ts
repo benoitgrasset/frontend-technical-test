@@ -57,13 +57,16 @@ const slice = createSlice({
       state,
       action: PayloadAction<{ conversationId: number; body: IMessage }>
     ) => {},
-    deleteMessageError: () => {},
+    deleteMessageError: (state, action) => {},
     deleteMessageSuccess: () => {},
-    deleteMessageRequest: (state, action: PayloadAction<number>) => {
-      const messageId = action.payload;
-      state.messages = state.messages.filter(
-        (message) => message.id !== messageId
-      );
+    deleteMessageRequest: (
+      state,
+      action: PayloadAction<{ conversationId: number; messageId: number }>
+    ) => {
+      // const messageId = action.payload;
+      // state.messages = state.messages.filter(
+      //   (message) => message.id !== messageId
+      // );
     },
   },
   extraReducers: {

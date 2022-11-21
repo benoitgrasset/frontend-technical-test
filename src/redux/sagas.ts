@@ -87,13 +87,16 @@ function* sendMessageFlow(
   }
 }
 
-export function* deleteMessageFlow(action: PayloadAction<number>) {
+export function* deleteMessageFlow(
+  action: PayloadAction<{ conversationId: number; messageId: number }>
+) {
   try {
-    const messageId: number = action.payload;
+    const { messageId, conversationId } = action.payload;
     yield call(deleteMessage, messageId);
     yield put(deleteMessageSuccess());
+    yield put(getMessagesRequest(conversationId));
   } catch (e) {
-    yield put(deleteMessageError());
+    yield put(deleteMessageError(e));
   }
 }
 
